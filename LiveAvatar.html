@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>치매 예방 게임 개요</title>
+  <style>
+    :root { --bg:#0b1220; --card:#111a2e; --text:#e8eefc; --muted:#aab6d6; }
+    body { margin:0; font-family: system-ui, -apple-system, "Noto Sans KR", Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); }
+    .wrap { max-width: 980px; margin: 48px auto; padding: 0 20px; }
+    h1 { font-size: 28px; margin: 0 0 16px; }
+    .card { background: var(--card); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 18px 18px; margin: 12px 0; }
+    .card h2 { font-size: 18px; margin: 0 0 8px; }
+    .card p, .card li { color: var(--muted); line-height: 1.7; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+    /* ===== PIP ===== */
+    #pip {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 320px;         /* 기본: 16:9 */
+      height: 180px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow: 0 16px 40px rgba(0,0,0,.45);
+      background: #000;
+      z-index: 9999;
+    }
+    #pip.min {
+      width: 120px;
+      height: 120px;
+      border-radius: 999px; /* 원형 미니 PIP */
+    }
+    #pipHeader {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      z-index: 2;
+      pointer-events: none; /* iframe 클릭 방해 최소화 */
+    }
+    .pipBtn {
+      pointer-events: auto;
+      background: rgba(15, 20, 35, .72);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+    }
+    #pip iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* 모바일에서 너무 크면 자동 축소 */
+    @media (max-width: 480px) {
+      #pip { width: 260px; height: 146px; right: 12px; bottom: 12px; }
+      #pip.min { width: 96px; height: 96px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>치매 예방 게임 개요</h1>
+
+    <div class="card">
+      <h2>목표</h2>
+      <p>
+        인지 기능(주의·기억·집행기능)을 자극하는 짧은 게임을 반복 제공하고,
+        수행 데이터로 난이도/피드백을 개인화합니다.
+      </p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>핵심 게임 구성</h2>
+        <ul>
+          <li>주의력: 시각 탐색/반응속도 미션</li>
+          <li>작업기억: N-back/순서 기억</li>
+          <li>집행기능: 규칙 전환(셋-시프팅)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>운영/데이터</h2>
+        <ul>
+          <li>세션 단위 점수·정답률·반응시간 저장</li>
+          <li>주간 리포트(추세/변동) 제공</li>
+          <li>보호자/센터 관리자용 대시보드 연동</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>PIP 아바타 역할(예시)</h2>
+      <p>
+        우측 하단 아바타가 게임 설명, 동기부여 멘트, 진행 안내를 제공하고
+        필요 시 음성 기반 Q&A(예: “지금 뭐 하면 돼?”)를 처리합니다.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== PIP: HeyGen LiveAvatar Embed (iframe) =====
+       1) HeyGen에서 LiveAvatar 생성
+       2) Share/Embed에서 제공되는 URL(또는 share 토큰)을 아래에 붙여넣기
+       예시 URL 패턴: https://labs.heygen.com/guest/streaming-embed?share=...&inIFrame=1
+  -->
+  <div id="pip" class="min" aria-label="PIP LiveAvatar">
+    <div id="pipHeader">
+      <button class="pipBtn" id="toggleSize">확대/축소</button>
+      <button class="pipBtn" id="toggleHide">숨김</button>
+    </div>
+
+    <iframe
+      title="HeyGen LiveAvatar"
+      allow="microphone"
+      src="https://labs.heygen.com/guest/streaming-embed?share=PASTE_YOUR_SHARE_TOKEN_HERE&inIFrame=1">
+    </iframe>
+  </div>
+
+  <script>
+    const pip = document.getElementById("pip");
+    const btnSize = document.getElementById("toggleSize");
+    const btnHide = document.getElementById("toggleHide");
+
+    btnSize.addEventListener("click", () => {
+      pip.classList.toggle("min");
+    });
+
+    btnHide.addEventListener("click", () => {
+      pip.style.display = "none";
+      // 간단 복구: 2초 뒤 다시 표시(원하면 제거)
+      setTimeout(() => { pip.style.display = "block"; }, 2000);
+    });
+  </script>
+</body>
+</html>
