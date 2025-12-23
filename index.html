@@ -129,13 +129,8 @@
 
   <script>
     const pip = document.getElementById("pip");
-    const btnSize = document.getElementById("toggleSize");
     const btnHide = document.getElementById("toggleHide");
-
-    btnSize.addEventListener("click", () => {
-      pip.classList.toggle("min");
-    });
-
+  
     btnHide.addEventListener("click", () => {
       pip.style.display = "none";
       // 간단 복구: 2초 뒤 다시 표시(원하면 제거)
